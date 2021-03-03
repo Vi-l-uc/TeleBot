@@ -7,9 +7,9 @@ class ConvertionException(Exception):
     pass
 
 
-class CriptoConvecter:
+class APIException:
     @staticmethod
-    def convector(quote: str, base: str, amount: str):
+    def get_price(quote: str, base: str, amount: str):
 
         if quote == base:
             raise ConvertionException(f"Невозможно перевести {base} в {base}")

@@ -1,6 +1,6 @@
 import telebot
 from config import keys, TOKEN
-from utils import ConvertionException, CriptoConvecter
+from extensions import ConvertionException, APIException
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -33,7 +33,7 @@ def values(message: telebot.types.Message):
             raise ConvertionException("Лишние данные или недостаточно данных")
 
         quote, base, amount = val
-        total = CriptoConvecter.convector(quote, base, amount)
+        total =  APIException.get_price(quote, base, amount)
     except ConvertionException as e:
         bot.reply_to(message, f"Ошибка пользователя. \n{e}")
     except Exception as e:
