@@ -25,7 +25,7 @@ class APIException:
             raise ConvertionException(f"Не удалось обработать валюту {base}")
 
         if amount.find(',') != -1:
-            raise ConvertionException(f'Замените запятую на точку в {amount}')
+            amount = amount.replace(",", '.')
 
         try:
             amount = float(amount)

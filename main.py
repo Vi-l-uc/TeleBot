@@ -1,4 +1,5 @@
 import telebot
+import parsing_SG
 from config import keys, TOKEN
 from extensions import ConvertionException, APIException
 
@@ -13,7 +14,19 @@ def send_welcome(message):
     else:
         bot.send_message(message.chat.id, f"Привет, {message.from_user.first_name}")
     bot.send_message(message.chat.id, start_txt)
+    bot.send_message(message.chat.id, "Узнать цены на сайте Станкограда: /price")
     bot.send_message(message.chat.id, "Узнать доступные валюты: /values")
+
+
+@bot.message_handler(commands=['price'])
+def values(message: telebot.types.Message):
+    tex = parsing_SG.price()
+    text = 'Цены на сайте Станкограда на станки точильно-шлифовальные:'
+    for key in tex:
+
+        text = '\n'.join((text, key + ' - ' + tex[key],))
+        text = text.replace('Станок точильно-шлифовальный ', '')
+    bot.reply_to(message, text)
 
 
 @bot.message_handler(commands=['values'])
@@ -39,7 +52,7 @@ def values(message: telebot.types.Message):
     except Exception as e:
         bot.reply_to(message, f"Не удалось обработать команду. \n{e}")
     else:
-        text = f'Цена {amount} {quote} в {base} -  {total}'
+        text = f'{amount} {quote} = {total} {base}'
         bot.send_message(message.chat.id, text)
 
 
