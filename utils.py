@@ -23,5 +23,9 @@ class Criptoconv:
 
         r = requests.get(f'https://min-api.cryptocompare.com/data/price?fsym={quet}&tsyms={base}')
         itog = round(float(json.loads(r.content)[base])*float(amaund), 2)
+        try:
+            itog = float(itog)
+        except ValueError:
+            raise ConvertExcept(f'В базе данных не найден код валюты {quet} или {base}')
 
         return itog
